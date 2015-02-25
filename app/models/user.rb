@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :omniauthable
   has_many :identities
+  has_many :tweets
 
   def twitter
     identities.where( :provider => "twitter" ).first

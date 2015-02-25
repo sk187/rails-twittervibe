@@ -1,6 +1,34 @@
 
-<% @tweets.each do |tweet| %>
-	<li><%= tweet.text %></li>
-	<li><%= tweet.created_at%></li>
-	<li><%= tweet.id %>
-<% end %>
+<ul class="tweet-list"></ul>
+
+<script>
+
+	//Makes AJAX call for User Tweets
+	function userTweets(userId) {
+		var url = window.location.origin + "/users/" + userId + "/tweets.json";
+		$.ajax({
+			type: "GET",
+			url: url,
+			dataType: "json",
+			success: function(tweets){
+				renderTweets(tweets);
+			},
+			error: function(){
+				alert('BROKEN!');
+			}
+		});
+	};
+
+	// Appends tweets to the page
+	function renderTweets(tweets){
+		$(".tweet-list").empty();
+
+		_.each(tweets, function(tweet, i){
+			var tweet = tweet["text"]
+			$(".tweet-list").append("<li>"+tweet+"</li>")
+		});
+	};
+
+userTweets(<%=current_user.id%>);
+
+</script>

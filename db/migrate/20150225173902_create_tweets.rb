@@ -3,7 +3,7 @@ class CreateTweets < ActiveRecord::Migration
     create_table :tweets do |t|
       t.references :user, index: true
       t.string :text
-      t.integer :id
+      t.integer :tweetid
       t.string :date
 
       t.timestamps null: false
