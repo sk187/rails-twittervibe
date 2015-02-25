@@ -4,16 +4,14 @@ class Tweet < ActiveRecord::Base
   def self.add_tweets_to_database(tweets, id)
 	
 		tweets.each do |t|
-			exist = Tweet.find_by(:id => t.id)
-			if exist == nil
+			exist = Tweet.find_by(:tweetid => t.id)
+			if exist.nil?
 				Tweet.create(
 					user_id: 1, # @id currently not working
 					text: t.text, 
 					tweetid: t.id,
 					date: t.created_at
 				)
-			else
-		
 			end
 		end
 	end
