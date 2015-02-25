@@ -21,5 +21,5 @@ class User < ActiveRecord::Base
   def facebook_client
     @facebook_client ||= Facebook.client( access_token: facebook.accesstoken )
   end
-  
+
 end

@@ -15,15 +15,17 @@
 			<% if user_signed_in? %>
 				Logged in as 
 					<strong> 
-						<% if current_user.name? %>
-							<%=current_user.name %> 
-							<%= image_tag("#{current_user.pic}") %>
+			
+					 <% @id = Identity.find_by(:user_id => current_user.id)%>
+						<% if @id.name? %>
+							<%= @id.name %> 
+							<%= image_tag("#{@id.image}") %>
 						<% else %>
-							<%= current_user.username %> 
-							<%= image_tag("#{current_user.pic}") %>
+							<%= @id.email %> 
+							<%= image_tag("#{@id.image}") %>
 						<% end %>
 					</strong>
-				<%link_to 'Edit Profile', edit_user_registration_path %> |
+				<%=link_to 'Edit Profile', edit_user_registration_path %> |
 				<%=link_to "Logout", destroy_user_session_path, method: :delete %>
 			<%else%>
 				<%= link_to "Sign Up", new_user_registration_path %> |

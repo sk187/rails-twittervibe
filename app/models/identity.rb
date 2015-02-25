@@ -14,6 +14,7 @@ class Identity < ActiveRecord::Base
     identity.image = auth.info.image
     identity.phone = auth.info.phone
     identity.urls = (auth.info.urls || "").to_json
+    identity.accesssecret = auth.credentials.secret
     identity.save
     identity
   end
