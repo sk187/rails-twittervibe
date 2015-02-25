@@ -1,23 +1,25 @@
 class User < ActiveRecord::Base
-	has_many :authorizations, :dependent => :destroy
+	# has_many :authorizations, :dependent => :destroy
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, 
-         :omniauth_providers => [:facebook, :twitter]
- 
-	def self.find_or_create_from_auth_hash(auth)
-		where(auth.slice("provider", "uid")).first || create_from_omniauth(auth)
-	end
+         :recoverable, :rememberable, :trackable, :omniauthable
+  has_many :identities
 
- 	def self.from_omniauth(auth)
-    	where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-	        user.provider = auth.provider
-	        user.uid = auth.uid
-	        user.email = auth.info.email
-	        user.password = Devise.friendly_token[0,20]
-	        # user.name = auth.info.name
-	        # user.image = auth.info.image
-      	end
-  	end
+  def twitter
+    identities.where( :provider => "twitter" ).first
+  end
+
+  def twitter_client
+    @twitter_client ||= Twitter.client( access_token: twitter.accesstoken )
+  end
+
+  def facebook
+    identities.where( :provider => "facebook" ).first
+  end
+
+  def facebook_client
+    @facebook_client ||= Facebook.client( access_token: facebook.accesstoken )
+  end
+  
 end

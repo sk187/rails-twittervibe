@@ -26,6 +26,7 @@ gem 'devise'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'figaro'
+gem 'koala'
 
 
 group :development, :test do
