@@ -2,17 +2,14 @@
 class UsersController < ApplicationController
 	def index
 		
-			if user_signed_in?
-				@tweets = twitter_client.user_timeline("Quant_LIfe").take(4)
-				@id = current_user.id
-				Tweet.add_tweets_to_database(@tweets, @id)	
-			end
-		@tweets = Tweet.all
+		if user_signed_in?
+			@tweets = twitter_client.user_timeline("Quant_LIfe").take(4)
+			@id = current_user.id
+			Tweet.add_tweets_to_database(@tweets, @id)	
 
-		respond_to do |format|
-      		format.html { render :index }
-      		format.json { render json: @tweets }
+
 		end
+	
 	end
 
 end

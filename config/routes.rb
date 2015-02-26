@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   end
 
   resources :homes
-  root "homes#index"
+  root "users#index"
 
   devise_scope :user do
     get '/users/auth/:provider/upgrade' => 'omniauth_callbacks#upgrade', as: :user_omniauth_upgrade
