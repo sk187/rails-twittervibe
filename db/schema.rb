@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150226031259) do
+ActiveRecord::Schema.define(version: 20150226191732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,17 @@ ActiveRecord::Schema.define(version: 20150226031259) do
 
   add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
 
+  create_table "scoreboards", force: :cascade do |t|
+    t.integer "user_id"
+    t.string  "reference_date"
+    t.string  "unixtime"
+    t.string  "minscore"
+    t.string  "maxscore"
+    t.string  "avgscore"
+  end
+
+  add_index "scoreboards", ["user_id"], name: "index_scoreboards_on_user_id", using: :btree
+
   create_table "tweets", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "text"
@@ -52,6 +63,12 @@ ActiveRecord::Schema.define(version: 20150226031259) do
     t.string   "tweetid"
     t.string   "sentimentscore"
     t.string   "unixtime"
+    t.string   "year"
+    t.string   "month"
+    t.string   "day"
+    t.string   "hour"
+    t.string   "minutes"
+    t.string   "seconds"
   end
 
   add_index "tweets", ["user_id"], name: "index_tweets_on_user_id", using: :btree
@@ -80,5 +97,6 @@ ActiveRecord::Schema.define(version: 20150226031259) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "identities", "users"
+  add_foreign_key "scoreboards", "users"
   add_foreign_key "tweets", "users"
 end

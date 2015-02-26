@@ -7,16 +7,35 @@
 
 	//Makes AJAX call for User Tweets
 	function userTweets(userId) {
-		var url = window.location.origin + "/users/" + userId + "/tweets.json";
+		var tweet_url = window.location.origin + "/users/" + userId + "/tweets.json";
+
+		var points_url = window.location.origin + "/users/" + userId + "/scoreboards.json";
+
+
 		$.ajax({
 			type: "GET",
-			url: url,
+			url: tweet_url,
 			dataType: "json",
 			success: function(tweets){
 				renderTweets(tweets);
+				// getPoints();
+
 			},
 			error: function(){
 				alert('AJAX call for User Tweets has failed');
+			}
+		});
+
+		$.ajax({
+			type: "GET",
+			url: points_url,
+			dataType: "json",
+			success: function(points){
+				graphTweets(points);
+
+			},
+			error: function(){
+				alert('AJAX call for Points has failed');
 			}
 		});
 	};
@@ -31,69 +50,85 @@
 		});
 	};
 
-<% if user_signed_in? %>
-userTweets(<%=current_user.id%>);
-<% end %>
+	// function getPoints(userId){
+		
 
-$(function () {
+		
 
-    var ranges = [
-            [2015-02-26, 14.3, 27.7],
-            [2015-02-27, 14.5, 27.8],
-        
-        ],
-        averages = [
-            [2015-02-26, 21.5],
-            [2015-02-27, 22.1],
-    
-        ];
+	// }
+
+		var ranges = [];
+		var averages = []; 
+
+	function graphTweets(points){
+		
+
+		_.each(points, function(point, i){
+			var	unixtime = point["unixtime"];
+			var minscore = parseInt(point["minscore"]);
+			var maxscore = parseInt(point["maxscore"]);
+			var avgscore = parseInt(point["avgscore"]);
+			var newrange = []
+			var newaverage = []
+			newrange.push(unixtime, minscore, maxscore)
+			newaverage.push(unixtime, avgscore)
+			ranges.push(newrange)
+			averages.push(newaverage)	
+		})
+
+	    // averages = averages
+	    // ranges = ranges
+	    console.log(averages)
 
 
-    $('#container-chart').highcharts({
+	    $('#container-chart').highcharts({
 
-        title: {
-            text: 'July temperatures'
-        },
+	        title: {
+	            text: 'Your Tweet Sentiments'
+	        },
 
-        xAxis: {
-            type: 'datetime'
-        },
+	        xAxis: {
+	            type: 'datetime'
+	        },
 
-        yAxis: {
-            title: {
-                text: null
-            }
-        },
+	        yAxis: {
+	            title: {
+	                text: 'Sentiment'
+	            }
+	        },
 
-        tooltip: {
-            crosshairs: true,
-            shared: true,
-            valueSuffix: '°C'
-        },
+	        tooltip: {
+	            crosshairs: true,
+	            shared: true,
+	            valueSuffix: '°C'
+	        },
 
-        legend: {
-        },
+	        legend: {
+	        },
 
-        series: [{
-            name: 'Temperature',
-            data: averages,
-            zIndex: 1,
-            marker: {
-                fillColor: 'white',
-                lineWidth: 2,
-                lineColor: Highcharts.getOptions().colors[0]
-            }
-        }, {
-            name: 'Range',
-            data: ranges,
-            type: 'arearange',
-            lineWidth: 0,
-            linkedTo: ':previous',
-            color: Highcharts.getOptions().colors[0],
-            fillOpacity: 0.3,
-            zIndex: 0
-        }]
-    });
-});
+	        series: [{
+	            name: 'Sentiment Score',
+	            data: averages,
+	            zIndex: 1,
+	            marker: {
+	                fillColor: 'white',
+	                lineWidth: 2,
+	                lineColor: Highcharts.getOptions().colors[0]
+	            }
+	        }, {
+	            name: 'Range',
+	            data: ranges,
+	            type: 'arearange',
+	            lineWidth: 0,
+	            linkedTo: ':previous',
+	            color: Highcharts.getOptions().colors[0],
+	            fillOpacity: 0.3,
+	            zIndex: 0
+	        }]
+	    });
+	}
 
+	<% if user_signed_in? %>
+	userTweets(<%=current_user.id%>);
+	<% end %>
 </script>

@@ -1,19 +1,24 @@
 require 'active_support/duration'
 require 'active_support/core_ext/numeric/time'
 
-
 class Tweet < ActiveRecord::Base
   belongs_to :user
 
-  def self.add_tweets_to_database(tweets, id)
-	
+
+	def self.add_tweets_to_database(tweets, id)
+		
+		@added_new_tweets = false
+		@new_tweet_num = 0 
+		
 		tweets.each do |t|
 			exist = Tweet.find_by(:tweetid => t.id)
-			if exist.nil?
-
+			if #exist.nil?
+				#Determine if any tweets were added
+				
+				
 				#get tweet body
 				str = t.text.dup 
-				#get rid of charactors
+				#get rid of characters
 				str.gsub!(/[^0-9A-Za-z]/, ' ')
 				#make all lowercase
 				str.downcase!
@@ -40,15 +45,118 @@ class Tweet < ActiveRecord::Base
 				unixint = time.to_i
 				unix = unixint.to_s
 
+				#Add granular date info 
+				date = time.to_s
+				date.gsub!(/[^0-9A-Za-z]/, ' ')
+				datearray = date.split
+				year = datearray[0]
+				month = datearray[1]
+				day = datearray[2]
+				hour = datearray[3]
+				min = datearray[4]
+				sec = datearray[5]
+
 				Tweet.create(
 					user_id: id, 
 					text: t.text, 
 					tweetid: t.id,
 					date: t.created_at,
 					sentimentscore: score,
-					unixtime: unix
+					unixtime: unix,
+					year: year,
+					month: month,
+					day: day,
+					hour: hour,
+					minutes: min,
+					seconds: sec
 				)
+				 
+				@new_tweet_num +=1
+				@added_new_tweets = true
 			end
-		end
+		end	
+		@first_tweet = true
+		#if true
+		if @added_new_tweets == true
+			#get all new tweets
+			lastest_tweets = Tweet.order("created_at DESC") #Todo: limit tweets queried			
+			#sort by same day
+			lastest_tweets.each do |tweet|
+				#Creates a date to reference
+				reference_date = tweet.year+tweet.month+tweet.day
+				minscore = 0
+				maxscore = 0
+				sum = "0"
+				num_of_tweets = 0
+				unixtime = tweet.unixtime
+				
+				
+				#Calculates date for tweet 
+				date = tweet.year+tweet.month+tweet.day
+
+				#Creates and except for the first tweet
+				while @first_tweet == true
+					date = tweet.year+tweet.month+tweet.day
+					@first_tweet = false
+				end
+				
+				if reference_date != date
+					#calculate min value
+					tweet_score = tweet.sentimentscore.to_i 
+					if tweet_score <= minscore
+						minscore = tweet_score
+					end
+					
+					#calculate max value
+					if tweet_score >= maxscore
+						maxscore = tweet_score
+					end
+					
+					#calculate score sum for same date
+					sum_int = sum.to_i
+					sum = sum_int + tweet_score
+
+					#calculate total num of tweets for same date
+					num_of_tweets+=1
+					
+				else
+					#calculate avg
+					sum_int = sum.to_i
+					if sum_int == 0
+						avgscore = 0
+					else
+						avgscore = sum_int/num_of_tweets
+					end
+					#check if a entry for that day exists
+
+					entry = Scoreboard.find_by(:reference_date => reference_date)
+					#if false 
+					if entry.nil?
+					#add new entry into tweetsentimentdaytracker
+						Scoreboard.create(
+							reference_date: reference_date,
+							unixtime: unixtime,
+							minscore: minscore,
+							maxscore: maxscore,
+							user_id: id,
+							avgscore: avgscore
+						)
+					#if true
+					else
+						#update that entry with data
+						entry.update(
+							reference_date: reference_date,
+							unixtime: unixtime,
+							minscore: minscore,
+							maxscore: maxscore,
+							user_id: id,
+							avgscore: avgscore
+						)
+					end
+				
+				end
+				
+			end	
+		end						
 	end
 end

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   'registrations' }
   resources :users do
   	resources :tweets
+    resources :scoreboards
   end
 
   resources :homes
