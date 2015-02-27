@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NineToFiveTherapy</title>
+  <title>Twitter Vibe</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -12,39 +12,11 @@
   <script src="http://code.highcharts.com/highcharts.js"></script>
   <script src="http://code.highcharts.com/highcharts-more.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 </head>
+
 <body>
-
-	<div id="container">
-		<div id="user_nav"?>
-			<% if user_signed_in? %>
-				Logged in as 
-					<strong> 
-					 <% @id = Identity.find_by(:user_id => current_user.id)%>
-						<% if @id.name? %>
-							<%= @id.name %> 
-							<%= image_tag("#{@id.image}") %>
-						<% else %>
-							<%= @id.email %> 
-							<%= image_tag("#{@id.image}") %>
-						<% end %>
-					</strong>
-				<%=link_to 'Edit Profile', edit_user_registration_path %> |
-				<%=link_to "Logout", destroy_user_session_path, method: :delete %>
-			<%else%>
-				<%= link_to "Sign Up", new_user_registration_path %> |
-				<%= link_to "Login", new_user_session_path %> |
-				<%= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter) %> |
-				<%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
-			<% end %>
-		</div>
-	</div>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
-
+Hi Wes
 <%= yield %>
-
 </body>
 </html>

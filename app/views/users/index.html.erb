@@ -1,209 +1,176 @@
+<div class="site-wrapper">
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+<div class="site-wrapper-inner">
 
-    <title>Cover Template for Bootstrap</title>
+<div class="cover-container">
 
-    <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+  <div class="masthead clearfix">
+    <div class="inner">
+      	<h3 class="masthead-brand">Twitter Vibe</h3>
+          	<nav>
+            	<ul class="nav masthead-nav">
 
-    <!-- Custom styles for this template -->
-    <link href="cover.css" rel="stylesheet">
+	                <% if user_signed_in? %>
+	                	<strong> 
+						 	<% @id = Identity.find_by(:user_id => current_user.id)%>
+							<% if @id.name? %>
+								<%= @id.name %> 
+								<%= image_tag("#{@id.image}") %>
+							<% else %>
+								<%= @id.email %> 
+								<%= image_tag("#{@id.image}") %>
+							<% end %>
+						</strong>	
+	                  	<li class="active"><%=link_to 'Edit Profile', edit_user_registration_path %></li>
+	                  	<li><%=link_to "Logout", destroy_user_session_path, method: :delete %></li>   
+	                <%else%>
+	                  	<li><%= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter)%></li>
+	                <%end%>  
+        		</ul>
+    		</nav>
+    	</div>
+  	</div>
 
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+  	<div id="container-chart">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
+<!--             <p class="lead" >Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+    <p class="lead">
+    </p> -->
 
-  <body>
+ <div class="inner cover">
+    <h1 class="cover-heading">Twitter Vibe</h1>
+ </div>
 
-    <div class="site-wrapper">
-
-      <div class="site-wrapper-inner">
-
-        <div class="cover-container">
-
-          <div class="masthead clearfix">
-            <div class="inner">
-              <h3 class="masthead-brand">Cover</h3>
-              <nav>
-                <ul class="nav masthead-nav">
-                  <li class="active"><a href="#">Home</a></li>
-                  <li><a href="#">Features</a></li>
-                  <li><a href="#">Contact</a></li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-
-<!--           <div id="container-chart" style="width:100%; height:400px; background-color: blue;"></div>
-		  <div class="tweet-list-container" style="width:100%; height:400px; background-color: #EEE;">
-		 <ul class="tweet-list"></ul>
-		 </div> -->
-         <button class="calculate"> Calculate </button>
-
-          <div class="inner cover">
-            <h1 class="cover-heading">Cover your page.</h1>
-            <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
-            <p class="lead">
-              <a href="#" class="btn btn-lg btn-default">Learn more</a>
-            </p>
-          </div>
-
-          <div class="mastfoot">
-            <div class="inner">
-              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
+  <div class="mastfoot">
+    <div class="inner">
+      <p> Twitter Vibe by Sung Kim </p>
     </div>
+  </div>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/docs.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-    <script>
+</div>
 
-		//Makes AJAX call for User Tweets
-		function userTweets(userId) {
-			var tweet_url = window.location.origin + "/users/" + userId + "/tweets.json";
+</div>
 
-			var points_url = window.location.origin + "/users/" + userId + "/scoreboards.json";
+</div>
+
+<script>
+//Makes AJAX call for User Tweets
+function userTweets(userId) {
+	var tweet_url = window.location.origin + "/users/" + userId + "/tweets.json";
+
+	var points_url = window.location.origin + "/users/" + userId + "/scoreboards.json";
 
 
-			$.ajax({
-				type: "GET",
-				url: tweet_url,
-				dataType: "json",
-				success: function(tweets){
-					renderTweets(tweets);
-					// getPoints();
+	$.ajax({
+		type: "GET",
+		url: tweet_url,
+		dataType: "json",
+		success: function(tweets){
+			renderTweets(tweets);
+			// getPoints();
 
-				},
-				error: function(){
-					alert('AJAX call for User Tweets has failed');
-				}
-			});
-
-			$.ajax({
-				type: "GET",
-				url: points_url,
-				dataType: "json",
-				success: function(points){
-					graphTweets(points);
-
-				},
-				error: function(){
-					alert('AJAX call for Points has failed');
-				}
-			});
-		};
-
-		// Appends tweets to the page
-		function renderTweets(tweets){
-			$(".tweet-list").empty();
-
-			_.each(tweets, function(tweet, i){
-				var tweet = tweet["text"]
-				$(".tweet-list").append("<li>"+tweet+"</li>")
-			});
-		};
-			var ranges = [];
-			var averages = []; 
-
-		function graphTweets(points){
-			
-
-			_.each(points, function(point, i){
-				var	datetime = parseInt(point["datetime"]);
-				var minscore = parseInt(point["minscore"]);
-				var maxscore = parseInt(point["maxscore"]);
-				var avgscore = parseInt(point["avgscore"]);
-				var newrange = []
-				var newaverage = []
-				newrange.push(datetime, minscore, maxscore)
-				newaverage.push(datetime, avgscore)
-				ranges.push(newrange)
-				averages.push(newaverage)	
-			})
-
-		    console.log(averages)
-
-
-		    $('#container-chart').highcharts({
-
-		        title: {
-		            text: 'Your Tweet Sentiments'
-		        },
-
-		        xAxis: {
-		            type: 'datetime'
-		        },
-
-		        yAxis: {
-		            title: {
-		                text: 'Sentiment'
-		            }
-		        },
-
-		        tooltip: {
-		            crosshairs: true,
-		            shared: true,
-		            valueSuffix: ''
-		        },
-
-		        legend: {
-		        },
-
-		        series: [{
-		            name: 'Average',
-		            data: averages,
-		            zIndex: 1,
-		            marker: {
-		                fillColor: 'white',
-		                lineWidth: 2,
-		                lineColor: Highcharts.getOptions().colors[0]
-		            }
-		        }, {
-		            name: 'Range',
-		            data: ranges,
-		            type: 'arearange',
-		            lineWidth: 0,
-		            linkedTo: ':previous',
-		            color: Highcharts.getOptions().colors[0],
-		            fillOpacity: 0.3,
-		            zIndex: 0
-		        }]
-		    });
+		},
+		error: function(){
+			alert('AJAX call for User Tweets has failed');
 		}
+	});
 
-		<% if user_signed_in? %>
-		userTweets(<%=current_user.id%>);
-		<% end %>
-	</script>
-  </body>
-</html>
+	$.ajax({
+		type: "GET",
+		url: points_url,
+		dataType: "json",
+		success: function(points){
+			graphTweets(points);
+
+		},
+		error: function(){
+			alert('AJAX call for Points has failed');
+		}
+	});
+};
+
+// Appends tweets to the page
+function renderTweets(tweets){
+	$(".tweet-list").empty();
+
+	_.each(tweets, function(tweet, i){
+		var tweet = tweet["text"]
+		$(".tweet-list").append("<li>"+tweet+"</li>")
+	});
+};
+	var ranges = [];
+	var averages = []; 
+
+function graphTweets(points){
+	
+
+	_.each(points, function(point, i){
+		var	datetime = parseInt(point["datetime"]);
+		var minscore = parseInt(point["minscore"]);
+		var maxscore = parseInt(point["maxscore"]);
+		var avgscore = parseInt(point["avgscore"]);
+		var newrange = []
+		var newaverage = []
+		newrange.push(datetime, minscore, maxscore)
+		newaverage.push(datetime, avgscore)
+		ranges.push(newrange)
+		averages.push(newaverage)	
+	})
+
+    console.log(averages)
+
+
+    $('#container-chart').highcharts({
+
+        title: {
+            text: 'Your Tweet Sentiments'
+        },
+
+        xAxis: {
+            type: 'datetime'
+        },
+
+        yAxis: {
+            title: {
+                text: 'Sentiment'
+            }
+        },
+
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            valueSuffix: ''
+        },
+
+        legend: {
+        },
+
+        series: [{
+            name: 'Average',
+            data: averages,
+            zIndex: 1,
+            marker: {
+                fillColor: 'white',
+                lineWidth: 2,
+                lineColor: Highcharts.getOptions().colors[0]
+            }
+        }, {
+            name: 'Range',
+            data: ranges,
+            type: 'arearange',
+            lineWidth: 0,
+            linkedTo: ':previous',
+            color: Highcharts.getOptions().colors[0],
+            fillOpacity: 0.3,
+            zIndex: 0
+        }]
+    });
+}
+
+<% if user_signed_in? %>
+userTweets(<%=current_user.id%>);
+<% end %>
+</script>
 
 
 
