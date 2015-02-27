@@ -176,3 +176,8 @@ body {
     width: 700px;
   }
 }
+
+.container-chart{
+	width: 80%;
+	padding-top: 2em;
+}

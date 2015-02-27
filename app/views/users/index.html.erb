@@ -13,7 +13,8 @@
 									 	<% @id = Identity.find_by(:user_id => current_user.id)%>
 										<% if @id.name? %>
 											<%= @id.name %> 
-											<%= image_tag("#{@id.image}") %>
+											<div class="img-thumbnail"><%= image_tag("#{@id.image}") %>
+											</div>
 										<% else %>
 											<%= @id.email %> 
 											<%= image_tag("#{@id.image}") %>
@@ -31,7 +32,7 @@
 			<div class="inner cover">
 		    	<h1 class="cover-heading">Twitter Vibe</h1>
 		 	</div>
-			<div class"inner" id="container-chart">
+			<div class"clearfix" id="container-chart">
 			</div>
 		  	<div class="mastfoot">
 		    	<div class="inner">
