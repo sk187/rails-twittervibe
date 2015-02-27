@@ -1,56 +1,45 @@
 <div class="site-wrapper">
-
-<div class="site-wrapper-inner">
-
-<div class="cover-container">
-
-  <div class="masthead clearfix">
-    <div class="inner">
-      	<h3 class="masthead-brand">Twitter Vibe</h3>
-          	<nav>
-            	<ul class="nav masthead-nav">
-
-	                <% if user_signed_in? %>
-	                	<strong> 
-						 	<% @id = Identity.find_by(:user_id => current_user.id)%>
-							<% if @id.name? %>
-								<%= @id.name %> 
-								<%= image_tag("#{@id.image}") %>
-							<% else %>
-								<%= @id.email %> 
-								<%= image_tag("#{@id.image}") %>
-							<% end %>
-						</strong>	
-	                  	<li class="active"><%=link_to 'Edit Profile', edit_user_registration_path %></li>
-	                  	<li><%=link_to "Logout", destroy_user_session_path, method: :delete %></li>   
-	                <%else%>
-	                  	<li><%= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter)%></li>
-	                <%end%>  
-        		</ul>
-    		</nav>
-    	</div>
-  	</div>
-
-  	<div id="container-chart">
-
-<!--             <p class="lead" >Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
-    <p class="lead">
-    </p> -->
-
- <div class="inner cover">
-    <h1 class="cover-heading">Twitter Vibe</h1>
- </div>
-
-  <div class="mastfoot">
-    <div class="inner">
-      <p> Twitter Vibe by Sung Kim </p>
-    </div>
-  </div>
-
-</div>
-
-</div>
-
+	<div class="site-wrapper-inner">
+		<div class="cover-container">
+		  	<div class="masthead clearfix">
+		    	<div class="inner">
+		      		<h3 class="masthead-brand">Twitter Vibe</h3>
+		      			<p class="notice"><%= notice %></p>
+		        		<p class="alert"><%= alert %></p>
+		          		<nav>
+		            		<ul class="nav masthead-nav">
+			                	<% if user_signed_in? %>
+			                		<strong> 
+									 	<% @id = Identity.find_by(:user_id => current_user.id)%>
+										<% if @id.name? %>
+											<%= @id.name %> 
+											<%= image_tag("#{@id.image}") %>
+										<% else %>
+											<%= @id.email %> 
+											<%= image_tag("#{@id.image}") %>
+										<% end %>
+									</strong>	
+			                  		<li class="active"><%=link_to 'Edit Profile', edit_user_registration_path %></li>
+			                  		<li><%=link_to "Logout", destroy_user_session_path, method: :delete %></li>   
+			                	<%else%>
+			                  		<li><%= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter)%></li>
+			                	<%end%>  
+		        			</ul>
+		    			</nav>
+		    		</div>
+		  		</div>
+			<div class="inner cover">
+		    	<h1 class="cover-heading">Twitter Vibe</h1>
+		 	</div>
+			<div class"inner" id="container-chart">
+			</div>
+		  	<div class="mastfoot">
+		    	<div class="inner">
+		      		<p> Twitter Vibe by Sung Kim </p>
+		    	</div>
+		  	</div>
+		</div>
+	</div>
 </div>
 
 <script>
@@ -123,7 +112,7 @@ function graphTweets(points){
     $('#container-chart').highcharts({
 
         title: {
-            text: 'Your Tweet Sentiments'
+            text: 'Your Tweet Vibes'
         },
 
         xAxis: {
