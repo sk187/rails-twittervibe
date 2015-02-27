@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150226191732) do
+ActiveRecord::Schema.define(version: 20150226222726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,10 +46,10 @@ ActiveRecord::Schema.define(version: 20150226191732) do
   create_table "scoreboards", force: :cascade do |t|
     t.integer "user_id"
     t.string  "reference_date"
-    t.string  "unixtime"
     t.string  "minscore"
     t.string  "maxscore"
     t.string  "avgscore"
+    t.string  "datetime"
   end
 
   add_index "scoreboards", ["user_id"], name: "index_scoreboards_on_user_id", using: :btree
@@ -62,13 +62,13 @@ ActiveRecord::Schema.define(version: 20150226191732) do
     t.datetime "updated_at",     null: false
     t.string   "tweetid"
     t.string   "sentimentscore"
-    t.string   "unixtime"
     t.string   "year"
     t.string   "month"
     t.string   "day"
     t.string   "hour"
     t.string   "minutes"
     t.string   "seconds"
+    t.string   "datetime"
   end
 
   add_index "tweets", ["user_id"], name: "index_tweets_on_user_id", using: :btree

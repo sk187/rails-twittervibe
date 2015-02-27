@@ -49,14 +49,6 @@
 			$(".tweet-list").append("<li>"+tweet+"</li>")
 		});
 	};
-
-	// function getPoints(userId){
-		
-
-		
-
-	// }
-
 		var ranges = [];
 		var averages = []; 
 
@@ -64,20 +56,18 @@
 		
 
 		_.each(points, function(point, i){
-			var	unixtime = point["unixtime"];
+			var	datetime = parseInt(point["datetime"]);
 			var minscore = parseInt(point["minscore"]);
 			var maxscore = parseInt(point["maxscore"]);
 			var avgscore = parseInt(point["avgscore"]);
 			var newrange = []
 			var newaverage = []
-			newrange.push(unixtime, minscore, maxscore)
-			newaverage.push(unixtime, avgscore)
+			newrange.push(datetime, minscore, maxscore)
+			newaverage.push(datetime, avgscore)
 			ranges.push(newrange)
 			averages.push(newaverage)	
 		})
 
-	    // averages = averages
-	    // ranges = ranges
 	    console.log(averages)
 
 
@@ -100,14 +90,14 @@
 	        tooltip: {
 	            crosshairs: true,
 	            shared: true,
-	            valueSuffix: '°C'
+	            valueSuffix: ''
 	        },
 
 	        legend: {
 	        },
 
 	        series: [{
-	            name: 'Sentiment Score',
+	            name: 'Average',
 	            data: averages,
 	            zIndex: 1,
 	            marker: {
