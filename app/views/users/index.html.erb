@@ -4,41 +4,33 @@
 		  	<div class="masthead clearfix">
 		    	<div class="inner">
 		      		<h3 class="masthead-brand">Twitter Vibe</h3>
-		      			<p class="notice"><%= notice %></p>
-		        		<p class="alert"><%= alert %></p>
-		          		<nav>
-		            		<ul class="nav masthead-nav">
-			                	<% if user_signed_in? %>
-			                		<strong> 
-									 	<% @id = Identity.find_by(:user_id => current_user.id)%>
-										<% if @id.name? %>
-											<%= @id.name %> 
-											<div class="img-thumbnail"><%= image_tag("#{@id.image}") %>
-											</div>
-										<% else %>
-											<%= @id.email %> 
-											<%= image_tag("#{@id.image}") %>
-										<% end %>
-									</strong>	
-			                  		<li class="active"><%=link_to 'Edit Profile', edit_user_registration_path %></li>
-			                  		<li><%=link_to "Logout", destroy_user_session_path, method: :delete %></li>   
-			                	<%else%>
-			                  		<li><%= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter)%></li>
-			                	<%end%>  
-		        			</ul>
-		    			</nav>
-		    		</div>
+<!-- 		      		<p class="notice"><%= notice %></p>
+		        	<p class="alert"><%= alert %></p> -->
+		          		
+		          	<nav>
+		           		<ul class="masthead-nav">
+		           			<p class ="lead">
+			               	<%= render partial: "navbar" %>
+			               </p>
+		       			</ul>
+		    		</nav>
+
 		  		</div>
+		  	</div>
+		  		
 			<div class="inner cover">
 		    	<h1 class="cover-heading">Twitter Vibe</h1>
 		 	</div>
-			<div class"clearfix" id="container-chart">
+
+			<div id="container-chart">
 			</div>
+
 		  	<div class="mastfoot">
 		    	<div class="inner">
 		      		<p> Twitter Vibe by Sung Kim </p>
 		    	</div>
 		  	</div>
+
 		</div>
 	</div>
 </div>
@@ -107,7 +99,7 @@ function graphTweets(points){
 		averages.push(newaverage)	
 	})
 
-    console.log(averages)
+    // console.log(averages)
 
 
     $('#container-chart').highcharts({
