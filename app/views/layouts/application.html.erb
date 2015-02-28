@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Twitter Vibe</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -11,10 +11,31 @@
   <script src="http://code.highcharts.com/highcharts-more.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 </head>
 
 
 <body>
+  
+<div class="site-wrapper">
+  <div class="site-wrapper-inner">
+    <div class="cover-container">
+        <div class="masthead clearfix">
+          <div class="inner">
+              <h3 class="masthead-brand">Twitter Vibe</h3>
+<!--              <p class="notice"><%= notice %></p>
+              <p class="alert"><%= alert %></p> -->
+                  
+                <nav>
+                  <ul class="masthead-nav">
+                    <p class ="lead">
+                      <%= render partial: "navbar" %>
+                     </p>
+                </ul>
+            </nav>
+
+          </div>
+        </div
 <%= yield %>
 
 </body>
