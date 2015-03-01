@@ -5,8 +5,8 @@ class ApplicationController < ActionController::Base
 
   def twitter_api
   	client = Twitter::REST::Client.new do |config|
-      config.consumer_key        = Rails.application.secrets.twitter_api_key
-      config.consumer_secret     = Rails.application.secrets.twitter_api_secret
+      config.consumer_key        = ENV["twitter_api_key"]
+      config.consumer_secret     = ENV["twitter_api_secret"]
       config.access_token        = @identity.accesstoken
       config.access_token_secret = @identity.accesssecret
   	end

@@ -13,7 +13,7 @@ Devise.setup do |config|
   config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
 
 
-  config.omniauth :twitter, ENV["twitter_api_key"], ENV["twitter_secret_key"]
+  config.omniauth :twitter, ENV["twitter_api_key"], ENV["twitter_api_secret"]
   config.omniauth :facebook, Rails.application.secrets.facebook_api_key, Rails.application.secrets.facebook_api_secret
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
