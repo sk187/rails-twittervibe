@@ -131,43 +131,39 @@ class Tweet < ActiveRecord::Base
 					else
 						avgscore = sum_int/num_of_tweets
 					end
-					#check if a entry for that day exists
-
-					entry = Scoreboard.find_by(:reference_date => reference_date)
-					#if false 
-					if entry.nil?
-					#add new entry into tweetsentimentdaytracker
-						Scoreboard.create(
-							reference_date: reference_date,
-							datetime: datetime,
-							minscore: minscore,
-							maxscore: maxscore,
-							user_id: id,
-							avgscore: avgscore
-						)
-
-						minscore = 0
-						maxscore = 0
-						sum = "0"
-						num_of_tweets = 0
-					#if true
-					else
+					user = Scoreboard.find_by(user_id: id, reference_date: reference_date)
+						entry = Scoreboard.find_by(:reference_date => reference_date)
+						#if false 
+						if entry.nil?
+							#add new entry into tweetsentimentdaytracker
+							Scoreboard.create(
+								reference_date: reference_date,
+								datetime: datetime,
+								minscore: minscore,
+								maxscore: maxscore,
+								user_id: id,
+								avgscore: avgscore
+							)
+							minscore = 0
+							maxscore = 0
+							sum = "0"
+							num_of_tweets = 0
+						#if true
+						else
 						#update that entry with data
 						entry.update(
 							reference_date: reference_date,
 							datetime: datetime,
 							minscore: minscore,
 							maxscore: maxscore,
-							user_id: id,
 							avgscore: avgscore
 						)
 
 						minscore = 0
 						maxscore = 0
 						sum = "0"
-						num_of_tweets = 0
-					end	
-					
+						num_of_tweets = 0							
+					end
 				end			
 			end	
 		end						
