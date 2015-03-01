@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
   	client = Twitter::REST::Client.new do |config|
       config.consumer_key        = Rails.application.secrets.twitter_api_key
       config.consumer_secret     = Rails.application.secrets.twitter_api_secret
-      config.access_token        = Identity.find_by(:user_id => current_user.id).accesstoken
-      config.access_token_secret = Identity.find_by(:user_id => current_user.id).accesssecret
+      config.access_token        = @identity.accesstoken
+      config.access_token_secret = @identity.accesssecret
   	end
   end
 

@@ -67,6 +67,7 @@ body {
 .cover-container {
   margin-right: auto;
   margin-left: auto;
+  margin-top: 6em;
 }
 
 /* Padding for spacing */
@@ -78,6 +79,11 @@ body {
 /*
  * Header
  */
+
+ .masthead {
+  z-index: 2;
+  background-color: #333;
+ }
 .masthead-brand {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -120,10 +126,15 @@ body {
   }
 }
 
+/*Tweet List*/
+.tweet-list > li {
+  list-style: none;
+  text-align: left;
 
-/*
- * Cover
- */
+}
+
+
+/* Cover */
 
 .cover {
   padding: 0 20px;

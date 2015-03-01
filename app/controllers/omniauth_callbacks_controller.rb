@@ -26,7 +26,14 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # This is because we've created the user manually, and Device expects a
       # FormUser class (with the validations)
       @user = FormUser.find @user.id
+
+      @tweets = twitter_api.user_timeline("#{@identity.nickname}", option = {:count => 200})
+      @id = @identity.user_id
+      Tweet.add_tweets_to_database(@tweets, @id)
+
       sign_in_and_redirect @user, event: :authentication
+      
+      
       set_flash_message(:notice, :success, kind: provider.capitalize) if is_navigational_format?
     else
       session["devise.#{provider}_data"] = env["omniauth.auth"]
