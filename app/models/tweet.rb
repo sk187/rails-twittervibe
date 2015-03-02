@@ -79,7 +79,7 @@ class Tweet < ActiveRecord::Base
 		#if true
 		if @added_new_tweets == true
 			#get all new tweets
-			lastest_tweets = Tweet.order("created_at DESC") #Todo: limit tweets queried			
+			lastest_tweets = Tweet.order("datetime DESC") #Todo: limit tweets queried			
 			#sort by same day
 
 			#Creates a date to reference
@@ -132,27 +132,25 @@ class Tweet < ActiveRecord::Base
 						avgscore = sum_int/num_of_tweets
 					end
 					user = Scoreboard.find_by(user_id: id, reference_date: reference_date)
-						entry = Scoreboard.find_by(:reference_date => reference_date)
-						#if false 
-						if entry.nil?
-							#add new entry into tweetsentimentdaytracker
-							Scoreboard.create(
-								reference_date: reference_date,
-								datetime: datetime,
-								minscore: minscore,
-								maxscore: maxscore,
-								user_id: id,
-								avgscore: avgscore
-							)
-							minscore = 0
-							maxscore = 0
-							sum = "0"
-							num_of_tweets = 0
-						#if true
-						else
+					#if false 
+					if user.nil?
+						#add new entry into tweetsentimentdaytracker
+						Scoreboard.create(
+							reference_date: reference_date,
+							datetime: datetime,
+							minscore: minscore,
+							maxscore: maxscore,
+							user_id: id,
+							avgscore: avgscore
+						)
+						minscore = 0
+						maxscore = 0
+						sum = "0"
+						num_of_tweets = 0
+					#if true
+					else
 						#update that entry with data
 						entry.update(
-							reference_date: reference_date,
 							datetime: datetime,
 							minscore: minscore,
 							maxscore: maxscore,
