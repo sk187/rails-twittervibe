@@ -16,8 +16,8 @@ class ApplicationController < ActionController::Base
     TweetStream.configure do |config|
       config.consumer_key        = Rails.application.secrets.twitter_api_key
       config.consumer_secret     = Rails.application.secrets.twitter_api_secret
-      config.oauth_token         = "2284092768-nszrfU9feD4OUBIlplFlQXSm1VQduS7D8XQkPpu"
-      config.oauth_token_secret  = "LP2mMgtjtR6MuPoyyyiCQAZxx0us426seZA26H165hM64"
+      config.oauth_token         = @identity.accesstoken
+      config.oauth_token_secret  = @identity.accesssecret
       config.auth_method         = :oauth
     end
   end
