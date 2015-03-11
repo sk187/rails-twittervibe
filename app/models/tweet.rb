@@ -4,9 +4,35 @@ require 'active_support/core_ext/numeric/time'
 class Tweet < ActiveRecord::Base
   belongs_to :user
 
+  	def self.twitter_api(id, identity)
+	  	client = Twitter::REST::Client.new do |config|
+	      config.consumer_key        = ENV["twitter_api_key"]
+	      config.consumer_secret     = ENV["twitter_api_secret"]
+	      config.access_token        = identity.accesstoken
+	      config.access_token_secret = identity.accesssecret
+	  	end
+  	end
+
+  	def self.get_old_tweets(id, identity)
+  		latest_tweets = Tweet.where(user_id: id)
+  		ordered_latest_tweets = latest_tweets.order(:datetime) 
+  		oldest_tweet = ordered_latest_tweets.first
+  		oldest_tweet_id = oldest_tweet.tweetid
+  		tweets = twitter_api(id, identity).user_timeline("#{identity.nickname}", option = {:max_id => "#{oldest_tweet_id}", :count => 200})
+  		add_tweets_to_database(tweets, id)
+  	end
+
+  	def self.get_new_tweets(id, identity)
+  		latest_tweets = Tweet.where(user_id: id)
+  		ordered_latest_tweets = latest_tweets.order(:datetime) 
+  		oldest_tweet = ordered_latest_tweets.first
+  		oldest_tweet_id = oldest_tweet.tweetid
+  		tweets = twitter_api(id, identity).user_timeline("#{identity.nickname}", option = {:since_id => "#{oldest_tweet_id}", :count => 200})
+  		add_tweets_to_database(tweets, id)
+  	end
 
 	def self.add_tweets_to_database(tweets, id)
-		added_new_tweets = false
+		added_new_tweets = true
 		tweets.each do |t|
 		 	if Tweet.where(tweetid: t.id).exists?
 				
@@ -86,8 +112,8 @@ class Tweet < ActiveRecord::Base
 	def self.create_day_score (id)
 		#get all new tweets
 		
-		lastest_tweets = Tweet.where(user_id: id)
-		ordered_lastest_tweets = lastest_tweets.order(:datetime) 
+		latest_tweets = Tweet.where(user_id: id)
+		ordered_latest_tweets = latest_tweets.order(:datetime) 
 		@tweets_processed = 0
 		@minscore = 0
 		@maxscore = 0
@@ -95,7 +121,7 @@ class Tweet < ActiveRecord::Base
 		@num_of_tweets = 0
 		@reference_date = ''		
 
-		ordered_lastest_tweets.each do |tweet|	
+		ordered_latest_tweets.each do |tweet|	
 			
 			@reference_date = 
 				calculate_first_reference_date(tweet, @tweets_processed, 
@@ -195,7 +221,7 @@ class Tweet < ActiveRecord::Base
 
 	def self.update_entry(entry)
 		entry.update(
-			datetime: @datetime,
+			datetime: entry.datetime,
 			minscore: @minscore,
 			maxscore: @maxscore,
 			avgscore: @avgscore
@@ -207,5 +233,5 @@ class Tweet < ActiveRecord::Base
 		@maxscore = 0
 		@sum = "0"
 		@num_of_tweets = 0	
-	end		
+	end
 end

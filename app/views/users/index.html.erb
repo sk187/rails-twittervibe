@@ -1,15 +1,24 @@
 <div class="inner cover">
    	<h1 class="cover-heading">Twitter Vibe</h1>
+   	<!-- <button type ="button" id="getOldTweets"> Get Older Tweets </button> -->
+   	<%if user_signed_in?%>
+   	<%= button_to 'Add Older Tweets', new_user_tweet_path(:user_id => @id), :method => :get %>
+   	<%end%>
+
 </div>
 	
 <div id="container-chart">
 </div>
 
+<div>
+	<table id="tweet-list" border="3">
+	<table>	
+</div>
 <!-- <a class="twitter-timeline" 
 href="https://twitter.com/Quant_LIfe" 
 data-widget-id="571770754627555328"
 >Tweets by @Quant_LIfe</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.creaidentiteElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 </script>-->
 
 <div class="mastfoot">
@@ -21,6 +30,12 @@ data-widget-id="571770754627555328"
 
 
 <script>
+
+// $("#getOldTweets").on("click", function () {
+
+// });
+
+
 //Makes AJAX call for User Tweets
 function userTweets(userId) {
 	var tweet_url = window.location.origin + "/users/" + userId + "/tweets.json";
@@ -34,8 +49,6 @@ function userTweets(userId) {
 		dataType: "json",
 		success: function(tweets){
 			renderTweets(tweets);
-			// getPoints();
-
 		},
 		error: function(){
 			alert('AJAX call for User Tweets has failed');
@@ -58,11 +71,14 @@ function userTweets(userId) {
 
 // Appends tweets to the page
 function renderTweets(tweets){
-	$(".tweet-list").empty();
+	$("#tweet-list").empty();
+	$("#tweet-list").append("<tr> <th>Date</th> <th>Tweet</th> <th>Score</th> </tr>");
 
 	_.each(tweets, function(tweet, i){
-		var tweet = tweet["text"]
-		$(".tweet-list").append("<li>"+tweet+"</li>")
+	var body = tweet["text"]
+	var date = tweet["date"]
+	var score =tweet["sentimentscore"]
+	$("#tweet-list").append("<tr> <td>"+date+"</td> <td>"+body+"</td> <td>" +score+ "</td></tr>")
 	});
 };
 	var ranges = [];

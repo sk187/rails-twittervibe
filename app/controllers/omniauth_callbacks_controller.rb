@@ -27,7 +27,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # FormUser class (with the validations)
       @user = FormUser.find @user.id
 
-      @tweets = twitter_api.user_timeline("#{@identity.nickname}", option = {:count => 200})
+      @tweets = twitter_api.user_timeline(
+        "#{@identity.nickname}", option = {:count => 200})
       @id = @identity.user_id
       Tweet.add_tweets_to_database(@tweets, @id)
 
