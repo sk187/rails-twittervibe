@@ -1,6 +1,5 @@
 <div class="inner cover">
    	<h1 class="cover-heading">Twitter Vibe</h1>
-   	<!-- <button type ="button" id="getOldTweets"> Get Older Tweets </button> -->
    	<%if user_signed_in?%>
    	<%= button_to 'Add Older Tweets', new_user_tweet_path(:user_id => @id), :method => :get %>
    	<%end%>
@@ -10,9 +9,21 @@
 <div id="container-chart">
 </div>
 
+<div id="range_nav">
+	<form>
+		Start Date
+		<input type="date" id="start_date">
+		End Date
+		<input type="date" id="end_date">
+		<button id="range">Set</button>
+	</form>
+</div>
+
+
 <div>
+	<h2> Lastest Tweets </h2>
 	<table id="tweet-list" border="3">
-	<table>	
+	</table>	
 </div>
 <!-- <a class="twitter-timeline" 
 href="https://twitter.com/Quant_LIfe" 
@@ -30,12 +41,6 @@ data-widget-id="571770754627555328"
 
 
 <script>
-
-// $("#getOldTweets").on("click", function () {
-
-// });
-
-
 //Makes AJAX call for User Tweets
 function userTweets(userId) {
 	var tweet_url = window.location.origin + "/users/" + userId + "/tweets.json";
@@ -73,12 +78,17 @@ function userTweets(userId) {
 function renderTweets(tweets){
 	$("#tweet-list").empty();
 	$("#tweet-list").append("<tr> <th>Date</th> <th>Tweet</th> <th>Score</th> </tr>");
+	console.log(tweets);
 
-	_.each(tweets, function(tweet, i){
+	var tenTweets= tweets.slice(0,5)
+
+	_.each(tenTweets, function(tweet, i){
 	var body = tweet["text"]
-	var date = tweet["date"]
+	var month = tweet["month"]
+	var day = tweet["day"]
+	var year = tweet["year"]
 	var score =tweet["sentimentscore"]
-	$("#tweet-list").append("<tr> <td>"+date+"</td> <td>"+body+"</td> <td>" +score+ "</td></tr>")
+	$("#tweet-list").append("<tr> <td>"+month +"/"+day +"/"+year+ "</td> <td>"+body+"</td> <td>" +score+ "</td></tr>")
 	});
 };
 	var ranges = [];
@@ -100,10 +110,7 @@ function graphTweets(points){
 		averages.push(newaverage)	
 	})
 
-    console.log(averages)
-
     $('#container-chart').highcharts({
-
         title: {
             text: 'Your Tweet Vibes'
         },
@@ -133,9 +140,6 @@ function graphTweets(points){
             valueSuffix: ''
         },
 
-        legend: {
-        },
-
         series: [{
             name: 'Average',
             data: averages,
@@ -162,9 +166,125 @@ function graphTweets(points){
 <% if user_signed_in? %>
 userTweets(<%=current_user.id%>);
 <% end %>
+
+//Listener for Range Button
+$('#range').click(function(event){
+	event.preventDefault();
+
+
+	var userId = <%=current_user.id%>
+	var points_url = window.location.origin + "/users/" + userId + "/scoreboards.json";
+
+	$.ajax({
+		type: "GET",
+		url: points_url,
+		dataType: "json",
+		success: function(points){
+			graphFilteredTweets(points);
+
+		},
+		error: function(){
+			alert('AJAX call for Points has failed');
+		}
+	});
+})
+
+ 
+function graphFilteredTweets(points){
+	var ranges = [];
+	var averages = [];
+	var startDate = $('#start_date').val().split("-");
+	var endDate = $('#end_date').val().split("-");
+	var sMonth= startDate[1];
+	var sDay= startDate[2];
+	var sYear = startDate[0];
+	var eMonth = endDate[1];
+	var eYear = endDate[0];
+	var eDay= endDate[2];
+	var sCombined = sYear+sMonth+sDay;
+	var eCombined = eYear+eMonth+eDay;
+
+	var formattedStartDate = parseInt(sCombined);
+	var formattedEndDate = parseInt(eCombined);
+	
+	_.each(points, function(point, i){
+		var	datetime = parseInt(point["datetime"]);
+		var minscore = parseInt(point["minscore"]);
+		var maxscore = parseInt(point["maxscore"]);
+		var avgscore = parseInt(point["avgscore"]);
+		var reference_date = point["reference_date"];
+		var dateInt = parseInt(reference_date);
+
+		var newrange = []
+		var newaverage = []
+		// console.log("dateint: " + dateInt)
+		// console.log("Start Time: "+ formattedStartDate)
+		// console.log("End Time: "+ formattedEndDate)
+
+
+
+		if (dateInt > formattedStartDate && dateInt < formattedEndDate){
+			newrange.push(datetime, minscore, maxscore)
+			newaverage.push(datetime, avgscore)
+			ranges.push(newrange)
+			averages.push(newaverage)
+		}
+	})
+
+		$('#container-chart').highcharts({
+        title: {
+            text: 'Your Tweet Vibes'
+        },
+
+        chart: {
+        	borderRadius: 20,
+        	// plotBackgroundColor: "#BAB3B2"
+        },
+
+        credits: {
+        	enabled: false
+        },
+
+        xAxis: {
+            type: 'datetime'
+        },
+
+        yAxis: {
+            title: {
+                text: 'Sentiment'
+            }
+        },
+
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            valueSuffix: ''
+        },
+
+        series: [{
+            name: 'Average',
+            data: averages,
+            zIndex: 1,
+            marker: {
+                fillColor: 'white',
+                lineWidth: 2,
+                lineColor: Highcharts.getOptions().colors[0]
+            }
+        }, {
+            name: 'Range',
+            data: ranges,
+            type: 'arearange',
+            color: "#66CD00",
+            negativeColor: "#FF0000",
+            lineWidth: 0,
+            linkedTo: ':previous',
+            fillOpacity: 0.3,
+            zIndex: 0
+        }]
+    });
+}
+
 </script>
-
-
 
 
 
