@@ -31,11 +31,11 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         "#{@identity.nickname}", option = {:count => 200})
       @id = @identity.user_id
       Tweet.add_tweets_to_database(@tweets, @id)
-
+      flash[:success] = "Welcome #{@identity.name}!"
       sign_in_and_redirect @user, event: :authentication
       
       
-      set_flash_message(:notice, :success, kind: provider.capitalize) if is_navigational_format?
+      # set_flash_message(:notice, :success, kind: provider.capitalize) if is_navigational_format?
     else
       session["devise.#{provider}_data"] = env["omniauth.auth"]
       redirect_to new_user_registration_url

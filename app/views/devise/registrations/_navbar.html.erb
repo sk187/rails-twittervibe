@@ -1,8 +1,7 @@
-<% if user_signed_in? %>
-	<!-- <strong>  -->
- 		<!-- <li class="notice"><%= notice %></li>
+<% if user_signed_in? %>	
+<!-- 	<strong>  	 -->	
+		<!-- <li class="notice"><%= notice %></li>
         <li class="lead alert"><%= alert %></li> -->
-			
 	 	<% @id = Identity.find_by(:user_id => current_user.id)%>
 		<% if @id.name? %>
 			<li> <%= @id.name %> </li>
@@ -13,7 +12,8 @@
 		<% end %>
 	<!-- </strong>	 -->
 		<li ><%=link_to 'Home', users_path%> </li>
-		<li class ="active" ><%=link_to 'Edit Profile', edit_user_registration_path %></li>
+		<li class ="active"><%=link_to 'Edit Profile', edit_user_registration_path %></li>
+		
 		<li ><%=link_to "Logout", destroy_user_session_path, method: :delete %></li>   
 <%else%>
 		<li><%= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter)%></li>

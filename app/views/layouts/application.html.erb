@@ -1,40 +1,38 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Twitter Vibe</title>
+  <head>
+    <title>Twitter Vibe</title>
 
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
-  <script src="//code.highcharts.com/highcharts.js" type="text/javascript"></script>
-  <script src="//code.highcharts.com/highcharts-more.js" type="text/javascript"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-  <script src="http://d3js.org/d3.v3.min.js"></script>
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-</head>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+    <script src="//code.highcharts.com/highcharts.js" type="text/javascript"></script>
+    <script src="//code.highcharts.com/highcharts-more.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  </head>
 
 
-<body>
-
-<div class="site-wrapper">
-  <div class="site-wrapper-inner">
-    <div class="cover-container">
-        <div class="masthead clearfix">
-          <div class="inner">
-              <h3 class="masthead-brand">Twitter Vibe</h3>  
-                <nav>
-                  <ul class="masthead-nav">
-                    <%= render partial: "navbar" %>
-                </ul>
-            </nav>
-          </div>
+  <body>
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+            <div class="masthead clearfix">
+              <div class="inner">
+                  <h3 class="masthead-brand">Twitter Vibe</h3>  
+                    <nav>
+                      <ul class="masthead-nav">
+                        <%= render "navbar" %>
+                    </ul>
+                </nav>
+              </div>
+            </div>
+          <%= yield %>
         </div>
-      <%= yield %>
+      </div>
     </div>
-  </div>
-</div>
-
-</body>
+  </body>
 </html>

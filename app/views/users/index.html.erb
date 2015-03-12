@@ -1,30 +1,29 @@
 <div class="inner cover">
    	<h1 class="cover-heading">Twitter Vibe</h1>
    	<%if user_signed_in?%>
-   	<%= button_to 'Add Older Tweets', new_user_tweet_path(:user_id => @id), :method => :get %>
+   		<%= button_to 'Add Older Tweets', new_user_tweet_path(:user_id => @id), :method => :get %>
    	<%end%>
 
+   	<% flash.each do |key, value| %>
+   		<div class="alert alert-<%= key %>"><%= value %></div>
+  	<% end %>
 </div>
 	
 <div id="container-chart">
 </div>
 
-<div id="range_nav">
-	<form>
-		Start Date
-		<input type="date" id="start_date">
-		End Date
-		<input type="date" id="end_date">
-		<button id="range">Set</button>
-	</form>
-</div>
 
-
-<div>
-	<h2> Lastest Tweets </h2>
-	<table id="tweet-list" border="3">
-	</table>	
-</div>
+<% if user_signed_in? %>
+	<div id="range_nav">
+		<form>
+			Start Date
+			<input type="date" id="start_date">
+			End Date
+			<input type="date" id="end_date">
+			<button id="range">Set</button>
+		</form>
+	</div>
+<%end%>
 <!-- <a class="twitter-timeline" 
 href="https://twitter.com/Quant_LIfe" 
 data-widget-id="571770754627555328"
@@ -43,22 +42,9 @@ data-widget-id="571770754627555328"
 <script>
 //Makes AJAX call for User Tweets
 function userTweets(userId) {
-	var tweet_url = window.location.origin + "/users/" + userId + "/tweets.json";
+
 
 	var points_url = window.location.origin + "/users/" + userId + "/scoreboards.json";
-
-
-	$.ajax({
-		type: "GET",
-		url: tweet_url,
-		dataType: "json",
-		success: function(tweets){
-			renderTweets(tweets);
-		},
-		error: function(){
-			alert('AJAX call for User Tweets has failed');
-		}
-	});
 
 	$.ajax({
 		type: "GET",
@@ -74,28 +60,10 @@ function userTweets(userId) {
 	});
 };
 
-// Appends tweets to the page
-function renderTweets(tweets){
-	$("#tweet-list").empty();
-	$("#tweet-list").append("<tr> <th>Date</th> <th>Tweet</th> <th>Score</th> </tr>");
-	console.log(tweets);
-
-	var tenTweets= tweets.slice(0,5)
-
-	_.each(tenTweets, function(tweet, i){
-	var body = tweet["text"]
-	var month = tweet["month"]
-	var day = tweet["day"]
-	var year = tweet["year"]
-	var score =tweet["sentimentscore"]
-	$("#tweet-list").append("<tr> <td>"+month +"/"+day +"/"+year+ "</td> <td>"+body+"</td> <td>" +score+ "</td></tr>")
-	});
-};
 	var ranges = [];
 	var averages = []; 
 
 function graphTweets(points){
-	
 
 	_.each(points, function(point, i){
 		var	datetime = parseInt(point["datetime"]);
@@ -171,8 +139,10 @@ userTweets(<%=current_user.id%>);
 $('#range').click(function(event){
 	event.preventDefault();
 
-
+	<% if user_signed_in? %>
 	var userId = <%=current_user.id%>
+	<% end %>
+
 	var points_url = window.location.origin + "/users/" + userId + "/scoreboards.json";
 
 	$.ajax({
@@ -223,15 +193,21 @@ function graphFilteredTweets(points){
 
 
 
-		if (dateInt > formattedStartDate && dateInt < formattedEndDate){
+		if (dateInt >= formattedStartDate && dateInt <= formattedEndDate){
 			newrange.push(datetime, minscore, maxscore)
 			newaverage.push(datetime, avgscore)
 			ranges.push(newrange)
 			averages.push(newaverage)
 		}
 	})
+		// console.log("Ranges are: " + ranges)
+		// console.log("Ranges are: " + ranges.length +" long")
+		// console.log("Averages are: " + averages)
+		// console.log("Averages are: " + averages.length +" long")
 
-		$('#container-chart').highcharts({
+
+
+	$('#container-chart').highcharts({
         title: {
             text: 'Your Tweet Vibes'
         },

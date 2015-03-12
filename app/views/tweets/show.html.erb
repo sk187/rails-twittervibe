@@ -1,0 +1,39 @@
+<div>
+	<h2> Lastest Tweets </h2>
+	<table id="tweet-list" border="3">
+	</table>	
+</div>
+
+<script>
+	var tweet_url = window.location.origin + "/users/" + userId + "/tweets.json";
+
+	$.ajax({
+		type: "GET",
+		url: tweet_url,
+		dataType: "json",
+		success: function(tweets){
+			renderTweets(tweets);
+		},
+		error: function(){
+			alert('AJAX call for User Tweets has failed');
+		}
+	});
+
+	// Appends tweets to the page
+	function renderTweets(tweets){
+		$("#tweet-list").empty();
+		$("#tweet-list").append("<tr> <th>Date</th> <th>Tweet</th> <th>Score</th> </tr>");
+		// console.log(tweets);
+
+		var tenTweets= tweets.slice(-5,-1)
+
+		_.each(tenTweets, function(tweet, i){
+			var body = tweet["text"]
+			var month = tweet["month"]
+			var day = tweet["day"]
+			var year = tweet["year"]
+			var score =tweet["sentimentscore"]
+			$("#tweet-list").append("<tr> <td>"+month +"/"+day +"/"+year+ "</td> <td>"+body+"</td> <td>" +score+ "</td></tr>")
+		});
+	};
+</script>

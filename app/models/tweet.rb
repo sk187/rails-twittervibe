@@ -32,7 +32,7 @@ class Tweet < ActiveRecord::Base
   	end
 
 	def self.add_tweets_to_database(tweets, id)
-		added_new_tweets = true
+		added_new_tweets = false #switch back true after testing
 		tweets.each do |t|
 		 	if Tweet.where(tweetid: t.id).exists?
 				
