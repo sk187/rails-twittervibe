@@ -1,8 +1,30 @@
+<!-- Modal -->
+<div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">What is Twitter Vibe?</h4>
+
+      </div>
+      <div class="modal-body">
+       	<p>Twitter Vibe is a Twitter sentiment analysis application that assigns a positive / negative score to your tweets with a lexicon library called AFINN.</p>
+
+       	<p>The green area shows the range of your most positive tweets while the red shows the range of your most negative tweets.</p> 
+
+       	<p> The blue line that contained within the two shaded areas is the average score of all your tweets in a given day. </p>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="inner cover">
    	<h1 class="cover-heading">Twitter Vibe</h1>
-   	<%if user_signed_in?%>
-   		<%= button_to 'Add Older Tweets', new_user_tweet_path(:user_id => @id), :method => :get %>
-   	<%end%>
 
    	<% flash.each do |key, value| %>
    		<div class="alert alert-<%= key %>"><%= value %></div>
@@ -20,7 +42,8 @@
 			<input type="date" id="start_date">
 			End Date
 			<input type="date" id="end_date">
-			<button id="range">Set</button>
+			<button id="range" class="btn btn-primary">Set</button>
+			<%= button_to 'Add Older Tweets', new_user_tweet_path(:user_id => @id), :method => :get, class: "btn btn-primary" %>
 		</form>
 	</div>
 <%end%>

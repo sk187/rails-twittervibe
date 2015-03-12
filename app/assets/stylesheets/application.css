@@ -129,6 +129,13 @@ button{
   border-bottom-color: #fff;
 }
 
+.modal{
+  color:black;
+}
+.modal-body p {
+  text-align: left;
+}
+
 @media (min-width: 768px) {
   .masthead-brand {
     float: left;

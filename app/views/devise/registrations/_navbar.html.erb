@@ -12,9 +12,13 @@
 		<% end %>
 	<!-- </strong>	 -->
 		<li ><%=link_to 'Home', users_path%> </li>
+
 		<li class ="active"><%=link_to 'Edit Profile', edit_user_registration_path %></li>
 		
 		<li ><%=link_to "Logout", destroy_user_session_path, method: :delete %></li>   
+		<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#about">
+  		What is Twitter Vibe?
+		</button>
 <%else%>
 		<li><%= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter)%></li>
 <%end%>  
