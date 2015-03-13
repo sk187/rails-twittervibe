@@ -5,7 +5,13 @@
    		<div class="alert alert-<%= key %>"><%= value %></div>
   	<% end %>
 </div>
-	
+
+<% if !user_signed_in? %>
+<div>
+<%= image_tag("live-long-and-prosper.jpg", :class => "home_page_image") %>
+</div>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signIn">Come Back Mr. Spock</button>
+<% end %>
 <div id="container-chart">
 </div>
 
@@ -32,9 +38,9 @@
       <div class="modal-footer">
         <% if !user_signed_in? %>
         <button type="button" class="btn btn-success"><%= link_to "Tweet me up Scotty!", user_omniauth_authorize_path(:twitter)%></button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Meh ok</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Meh, ok</button>
         <%else%>
-            <button type="button" class="btn btn-info" data-dismiss="modal"> Got it Captain Kirk </button>
+            <button type="button" class="btn btn-success" data-dismiss="modal"> Got it Captain Kirk </button>
         <%end%>
       </div>
     </div>
@@ -49,7 +55,7 @@
 			<input type="date" id="start_date">
 			End Date
 			<input type="date" id="end_date">
-			<button id="range" class="btn btn-primary">Set</button>
+			<button id="range" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>
 			<%= button_to 'Analyze Older Tweets', new_user_tweet_path(:user_id => @id), :method => :get, class: "btn btn-primary" %>
 		</form>
 	</div>

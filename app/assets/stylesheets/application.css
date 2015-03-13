@@ -88,6 +88,10 @@ button{
   color:black;
   border-radius: .5em;
 }
+
+.home_page_image{
+  border-radius: 2em;
+}
 /*
  * Header
  */

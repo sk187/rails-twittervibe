@@ -11,13 +11,13 @@
 			<li> <%= image_tag("#{@id.image}") %> </li>
 		<% end %>
 	<!-- </strong>	 -->
-		<li class ="active"><%=link_to 'Home', users_path%> </li>
-		<li ><%=link_to 'Edit Profile', edit_user_registration_path %></li>
-		<li ><%=link_to "Logout", destroy_user_session_path, method: :delete %></li>
-		<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#about">
+		<button type="button" class="btn btn-primary"><%=link_to '<span class="glyphicon glyphicon-home"></span>'.html_safe, users_path%> </button>
+		<button type="button" class="btn btn-primary"><%=link_to '<span class="glyphicon glyphicon-user"></span>'.html_safe, edit_user_registration_path %></button>
+		<button type="button" class="btn btn-danger"><%=link_to '<span class="glyphicon glyphicon-off"></span>'.html_safe, destroy_user_session_path, method: :delete %></button>
+		<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#about">
   		What is Twitter Vibe?
-		</button>   
+		</button>  
 <%else%>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signIn">Come Back Mr. Spock</button>
+		
 <%end%>  
 
