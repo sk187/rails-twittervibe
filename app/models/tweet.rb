@@ -18,16 +18,16 @@ class Tweet < ActiveRecord::Base
   		ordered_latest_tweets = latest_tweets.order(:datetime) 
   		oldest_tweet = ordered_latest_tweets.first
   		oldest_tweet_id = oldest_tweet.tweetid
-  		tweets = twitter_api(id, identity).user_timeline("#{identity.nickname}", option = {:max_id => "#{oldest_tweet_id}", :count => 200})
+  		tweets = twitter_api(id, identity).user_timeline("#{identity.nickname}", option = {:max_id => "#{oldest_tweet_id}", :count => 10})
   		add_tweets_to_database(tweets, id)
   	end
 
   	def self.get_new_tweets(id, identity)
   		latest_tweets = Tweet.where(user_id: id)
   		ordered_latest_tweets = latest_tweets.order(:datetime) 
-  		oldest_tweet = ordered_latest_tweets.first
-  		oldest_tweet_id = oldest_tweet.tweetid
-  		tweets = twitter_api(id, identity).user_timeline("#{identity.nickname}", option = {:since_id => "#{oldest_tweet_id}", :count => 200})
+  		newest_tweet = ordered_latest_tweets.last
+  		newest_tweet_id = oldest_tweet.tweetid
+  		tweets = twitter_api(id, identity).user_timeline("#{identity.nickname}", option = {:since_id => "#{newest_tweet_id}", :count => 200})
   		add_tweets_to_database(tweets, id)
   	end
 

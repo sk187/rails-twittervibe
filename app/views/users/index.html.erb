@@ -91,12 +91,12 @@ function userTweets(userId) {
 		}
 	});
 };
-
-	var ranges = [];
-	var averages = []; 
-
+    var ranges = [];
+    var averages = []; 
+    
 function graphTweets(points){
-
+        ranges = [];
+        averages = []; 
 	_.each(points, function(point, i){
 		var	datetime = parseInt(point["datetime"]);
 		var minscore = parseInt(point["minscore"]);
@@ -165,18 +165,15 @@ function graphTweets(points){
 
 <% if user_signed_in? %>
 userTweets(<%=current_user.id%>);
-<% end %>
 
 //Listener for Range Button
 $('#range').click(function(event){
 	event.preventDefault();
 
-	<% if user_signed_in? %>
 	var userId = <%=current_user.id%>
-	<% end %>
 
 	var points_url = window.location.origin + "/users/" + userId + "/scoreboards.json";
-
+    alert('event listener')
 	$.ajax({
 		type: "GET",
 		url: points_url,
@@ -193,6 +190,8 @@ $('#range').click(function(event){
 
  
 function graphFilteredTweets(points){
+    alert('in graph filtered')
+    var oldestTweetDate = parseInt( points[0].reference_date)
 	var ranges = [];
 	var averages = [];
 	var startDate = $('#start_date').val().split("-");
@@ -209,89 +208,106 @@ function graphFilteredTweets(points){
 	var formattedStartDate = parseInt(sCombined);
 	var formattedEndDate = parseInt(eCombined);
 	
-	_.each(points, function(point, i){
-		var	datetime = parseInt(point["datetime"]);
-		var minscore = parseInt(point["minscore"]);
-		var maxscore = parseInt(point["maxscore"]);
-		var avgscore = parseInt(point["avgscore"]);
-		var reference_date = point["reference_date"];
-		var dateInt = parseInt(reference_date);
+    if (oldestTweetDate > formattedStartDate){
+        alert('after oldestTweetDate conditional')
+        <% id = current_user.id%>
+        <% identity = Identity.where(user_id: id).first %>
+        <% Tweet.get_old_tweets(id, identity) %>
 
-		var newrange = []
-		var newaverage = []
-		// console.log("dateint: " + dateInt)
-		// console.log("Start Time: "+ formattedStartDate)
-		// console.log("End Time: "+ formattedEndDate)
+        var userId = <%=current_user.id%>
 
+        var points_url = window.location.origin + "/users/" + userId + "/scoreboards.json";
 
+        $.ajax({
+            type: "GET",
+            url: points_url,
+            dataType: "json",
+            success: function(points){
+                console.log(points)
+                graphTweets(points);
+            },
+            error: function(){
+                alert('AJAX call for Points has failed');
+            }
+        });
 
-		if (dateInt >= formattedStartDate && dateInt <= formattedEndDate){
-			newrange.push(datetime, minscore, maxscore)
-			newaverage.push(datetime, avgscore)
-			ranges.push(newrange)
-			averages.push(newaverage)
-		}
-	})
-		// console.log("Ranges are: " + ranges)
-		// console.log("Ranges are: " + ranges.length +" long")
-		// console.log("Averages are: " + averages)
-		// console.log("Averages are: " + averages.length +" long")
+    }
+    else {   
+        _.each(points, function(point, i){
+            var datetime = parseInt(point["datetime"]);
+            var minscore = parseInt(point["minscore"]);
+            var maxscore = parseInt(point["maxscore"]);
+            var avgscore = parseInt(point["avgscore"]);
+            var reference_date = point["reference_date"];
+            var dateInt = parseInt(reference_date);
 
+            var newrange = []
+            var newaverage = []
+            // console.log("dateint: " + dateInt)
+            // console.log("Start Time: "+ formattedStartDate)
+            // console.log("End Time: "+ formattedEndDate)
+            if (dateInt >= formattedStartDate && dateInt <= formattedEndDate){
+                newrange.push(datetime, minscore, maxscore)
+                newaverage.push(datetime, avgscore)
+                ranges.push(newrange)
+                averages.push(newaverage)
+            }
+        })
 
-
-	$('#container-chart').highcharts({
-        title: {
-            text: 'Your Tweet Vibes'
-        },
-
-        chart: {
-        	borderRadius: 20,
-        	// plotBackgroundColor: "#BAB3B2"
-        },
-
-        credits: {
-        	enabled: false
-        },
-
-        xAxis: {
-            type: 'datetime'
-        },
-
-        yAxis: {
+        $('#container-chart').highcharts({
             title: {
-                text: 'Sentiment'
-            }
-        },
+                text: 'Your Tweet Vibes'
+            },
 
-        tooltip: {
-            crosshairs: true,
-            shared: true,
-            valueSuffix: ''
-        },
+            chart: {
+                borderRadius: 20,
+                // plotBackgroundColor: "#BAB3B2"
+            },
 
-        series: [{
-            name: 'Average',
-            data: averages,
-            zIndex: 1,
-            marker: {
-                fillColor: 'white',
-                lineWidth: 2,
-                lineColor: Highcharts.getOptions().colors[0]
-            }
-        }, {
-            name: 'Range',
-            data: ranges,
-            type: 'arearange',
-            color: "#66CD00",
-            negativeColor: "#FF0000",
-            lineWidth: 0,
-            linkedTo: ':previous',
-            fillOpacity: 0.3,
-            zIndex: 0
-        }]
-    });
+            credits: {
+                enabled: false
+            },
+
+            xAxis: {
+                type: 'datetime'
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Sentiment'
+                }
+            },
+
+            tooltip: {
+                crosshairs: true,
+                shared: true,
+                valueSuffix: ''
+            },
+
+            series: [{
+                name: 'Average',
+                data: averages,
+                zIndex: 1,
+                marker: {
+                    fillColor: 'white',
+                    lineWidth: 2,
+                    lineColor: Highcharts.getOptions().colors[0]
+                }
+            }, {
+                name: 'Range',
+                data: ranges,
+                type: 'arearange',
+                color: "#66CD00",
+                negativeColor: "#FF0000",
+                lineWidth: 0,
+                linkedTo: ':previous',
+                fillOpacity: 0.3,
+                zIndex: 0
+            }]
+        });
+    }	
 }
-
+<% end %>
 </script>
 
 
