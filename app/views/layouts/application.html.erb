@@ -44,7 +44,7 @@
       <div class="modal-footer">
         <a class="btn btn-info" data-toggle="modal" data-target="#about">What is Twitter Vibe?</a>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary"><%= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter)%></button>
+        <button type="button" id="twitter_sign_in" class="btn btn-primary"><%= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter)%></button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

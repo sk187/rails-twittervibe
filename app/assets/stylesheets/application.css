@@ -90,6 +90,24 @@ button{
   border-radius: .5em;
 }
 
+.btn span{
+  display: inline-block;
+  padding: 10px;
+}
+
+ul .btn{
+  padding: 0;
+}
+
+#twitter_sign_in {
+  padding: 5;
+}
+
+#twitter_sign_in a {
+  padding: 10px;
+}
+
+
 .home_page_image{
   border-radius: 2em;
   border: 10px solid;
