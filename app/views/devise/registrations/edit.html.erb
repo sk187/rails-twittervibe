@@ -37,3 +37,36 @@
 <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
 
 <%= link_to "Back", :back %>
+
+<!-- Modal -->
+<div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">What is Twitter Vibe?</h4>
+
+      </div>
+      <div class="modal-body">
+        <p>Twitter Vibe is a Twitter sentiment analysis application that assigns a positive / negative score to your tweets with a lexicon library called AFINN.  </p>
+        <br>
+        <p> The results are graphed on an area chart with a line graph representing the average score for the given day </p>
+        <br>
+        <p>The green area shows the range of your most positive tweets while the red shows the range of your most negative tweets.</p> 
+        <br>
+        <p> The blue line that contained within the two shaded areas is the average score of all your tweets in a given day. </p>
+
+
+      </div>
+      <div class="modal-footer">
+        <% if !user_signed_in? %>
+        <button type="button" class="btn btn-success"><%= link_to "Tweet me up Scotty!", user_omniauth_authorize_path(:twitter)%></button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Meh ok</button>
+        <%else%>
+            <button type="button" class="btn btn-info" data-dismiss="modal"> Got it Captain Kirk </button>
+        <%end%>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Modal -->

@@ -134,6 +134,14 @@ button{
 }
 .modal-body p {
   text-align: left;
+  width: 80%;
+  margin: auto;
+}
+.modal:nth-of-type(even) {
+    z-index: 1042 !important;
+}
+.modal-backdrop.in:nth-of-type(even) {
+    z-index: 1041 !important;
 }
 
 @media (min-width: 768px) {
