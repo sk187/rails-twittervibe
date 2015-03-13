@@ -110,10 +110,25 @@ ul .btn{
 .home_page_image{
   border-radius: 2em;
   border: 10px solid;
+  display: block;
+  margin: auto;
+}
+
+#home_page_not_signed_in{
+  width: 90%;
+  display: block;
+  margin: auto;
+}
+
+#spock_button{
+  display: block;
+  margin: auto;
 }
 
 .mr_spock{
   border-radius: 0.5em;
+  display: block;
+  margin: auto;
 }
 
 #brand {
