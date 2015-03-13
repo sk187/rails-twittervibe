@@ -49,6 +49,7 @@ body {
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
+  width: 90%;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -91,15 +92,26 @@ button{
 
 .home_page_image{
   border-radius: 2em;
+  border: 10px solid;
+}
+
+.mr_spock{
+  border-radius: 0.5em;
+}
+
+#brand {
+  text-align: left;
+  display: inline;
 }
 /*
  * Header
  */
 
- .masthead {
+.masthead {
   z-index: 2;
   background-color: #333;
  }
+
 .masthead-brand {
   margin-top: 10px;
   margin-bottom: 10px;
