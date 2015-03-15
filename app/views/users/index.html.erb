@@ -60,13 +60,15 @@
 		</form>
 	</div>
 <%end%>
-<!-- <a class="twitter-timeline" 
+<!-- Oembeded Timeline
+ --><!-- <a class="twitter-timeline" 
 href="https://twitter.com/Quant_LIfe" 
 data-widget-id="571770754627555328"
 >Tweets by @Quant_LIfe</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.creaidentiteElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 </script>-->
-
+<!-- End of Oembeded Timeline
+ -->
 <div class="mastfoot">
 	<div class="inner">
   		<p> Twitter Vibe by Sung Kim </p>
@@ -102,10 +104,10 @@ function userTweets(userId) {
 function graphTweets(points){
 
 	_.each(points, function(point, i){
-		var	datetime = parseInt(point["datetime"]);
-		var minscore = parseInt(point["minscore"]);
-		var maxscore = parseInt(point["maxscore"]);
-		var avgscore = parseInt(point["avgscore"]);
+		var	datetime = parseInt(point["datetime"], 10);
+		var minscore = parseInt(point["minscore"], 10);
+		var maxscore = parseInt(point["maxscore"], 10);
+		var avgscore = parseInt(point["avgscore"], 10);
 		var newrange = []
 		var newaverage = []
 		newrange.push(datetime, minscore, maxscore)
@@ -214,10 +216,10 @@ function graphFilteredTweets(points){
 	var formattedEndDate = parseInt(eCombined);
 	
 	_.each(points, function(point, i){
-		var	datetime = parseInt(point["datetime"]);
-		var minscore = parseInt(point["minscore"]);
-		var maxscore = parseInt(point["maxscore"]);
-		var avgscore = parseInt(point["avgscore"]);
+        var datetime = parseInt(point["datetime"], 10);
+        var minscore = parseInt(point["minscore"], 10);
+        var maxscore = parseInt(point["maxscore"], 10);
+        var avgscore = parseInt(point["avgscore"], 10);
 		var reference_date = point["reference_date"];
 		var dateInt = parseInt(reference_date);
 
